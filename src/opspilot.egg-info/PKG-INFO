@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: opspilot
+Version: 0.1.0
+Summary: AI-assisted operations control center MVP
+Author: OpsPilot
+Requires-Python: >=3.10

@@ -1,0 +1,15 @@
+[
+  {
+    "escalation_id": "ESC-0001",
+    "incident_id": "INC-9001",
+    "severity": "critical",
+    "assigned_team": "oncall",
+    "reason": "critical outage requires immediate response",
+    "status": "pending",
+    "created_at": "2026-06-01T12:00:00Z",
+    "acknowledged_at": null,
+    "resolved_at": null,
+    "notification_targets": ["oncall@ops.example.com"],
+    "service": "gateway"
+  }
+]

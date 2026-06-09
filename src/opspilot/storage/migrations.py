@@ -46,7 +46,21 @@ SCHEMA = {
         status TEXT,
         attempts INTEGER,
         next_run_at TEXT,
-        last_error TEXT
+        last_error TEXT,
+        idempotency_key TEXT
+    )''',
+    'escalations': '''CREATE TABLE IF NOT EXISTS escalations (
+        escalation_id TEXT PRIMARY KEY,
+        incident_id TEXT,
+        severity TEXT,
+        assigned_team TEXT,
+        reason TEXT,
+        status TEXT,
+        created_at TEXT,
+        acknowledged_at TEXT,
+        resolved_at TEXT,
+        notification_targets TEXT,
+        service TEXT
     )''',
     'users': '''CREATE TABLE IF NOT EXISTS users (
         user_id TEXT PRIMARY KEY,
@@ -62,6 +76,11 @@ def run_migrations(db_path: str):
     cur = conn.cursor()
     for name, sql in SCHEMA.items():
         cur.execute(sql)
+    # Add missing idempotency column for jobs on older schema versions.
+    cur.execute("PRAGMA table_info(jobs)")
+    existing_columns = [row[1] for row in cur.fetchall()]
+    if 'idempotency_key' not in existing_columns:
+        cur.execute('ALTER TABLE jobs ADD COLUMN idempotency_key TEXT')
     conn.commit()
     conn.close()
 

@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 
-from .api import routes_incidents, routes_deployments, routes_logs, routes_analytics, routes_workflows
+from .api import routes_incidents, routes_deployments, routes_logs, routes_analytics, routes_workflows, routes_escalations
 from .storage.migrations import run_migrations
 from .config import settings
 
@@ -15,6 +15,7 @@ app.include_router(routes_deployments.router, prefix='')
 app.include_router(routes_logs.router, prefix='')
 app.include_router(routes_analytics.router, prefix='')
 app.include_router(routes_workflows.router, prefix='')
+app.include_router(routes_escalations.router, prefix='')
 
 # Static + templates
 app.mount('/static', StaticFiles(directory='src/opspilot/web/static'), name='static')

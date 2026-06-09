@@ -4,6 +4,8 @@ from .storage import migrations, seed
 from .database import get_conn
 from .config import settings
 from .services.ai_service import AIService
+from .services.escalation_service import EscalationService
+from .storage.repositories import JobRepository
 
 
 def cmd_health(args):
@@ -35,6 +37,30 @@ def cmd_report(args):
     print('report: not implemented')
 
 
+def cmd_escalations(args):
+    db = args.db or settings.DB_PATH
+    svc = EscalationService(db_path=db)
+    for esc in svc.list():
+        print(esc['escalation_id'], esc['incident_id'], esc['status'], esc['severity'])
+
+
+def cmd_escalate(args):
+    db = args.db or settings.DB_PATH
+    svc = EscalationService(db_path=db)
+    result = svc.create_for_incident(args.incident)
+    print(result)
+
+
+def cmd_pending_notifications(args):
+    db = args.db or settings.DB_PATH
+    repo = JobRepository(db_path=db)
+    job = repo.next_job()
+    if not job:
+        print('no pending notifications')
+        return
+    print(job['job_id'], job['job_type'], job.get('idempotency_key'), job['payload'].get('incident_id'))
+
+
 def main():
     parser = argparse.ArgumentParser(prog='opspilot')
     sub = parser.add_subparsers()
@@ -55,6 +81,19 @@ def main():
     p.add_argument('--db')
     p.add_argument('--incident', required=True)
     p.set_defaults(func=cmd_triage)
+
+    p = sub.add_parser('escalations')
+    p.add_argument('--db')
+    p.set_defaults(func=cmd_escalations)
+
+    p = sub.add_parser('escalate')
+    p.add_argument('--db')
+    p.add_argument('--incident', required=True)
+    p.set_defaults(func=cmd_escalate)
+
+    p = sub.add_parser('pending-notifications')
+    p.add_argument('--db')
+    p.set_defaults(func=cmd_pending_notifications)
 
     p = sub.add_parser('report')
     p.set_defaults(func=cmd_report)
