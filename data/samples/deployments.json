@@ -1,0 +1,14 @@
+[
+  {
+    "deployment_id": "DEP-001",
+    "service": "service-a",
+    "version": "1.2.3",
+    "environment": "prod",
+    "status": "succeeded",
+    "started_at": "2026-05-31T09:00:00Z",
+    "finished_at": "2026-05-31T09:05:00Z",
+    "commit_sha": "abcdef1234",
+    "actor": "deploy-bot",
+    "rollback_of": null
+  }
+]

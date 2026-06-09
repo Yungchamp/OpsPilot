@@ -1,0 +1,3 @@
+{"timestamp":"2026-06-01T12:00:01Z","level":"ERROR","service":"service-a","client_id":"client-1","message":"Internal error","trace_id":"t1","status_code":500,"latency_ms":120}
+{"timestamp":"2026-06-01T12:00:02Z","level":"ERROR","service":"service-a","client_id":"client-1","message":"Internal error","trace_id":"t2","status_code":500,"latency_ms":200}
+{"timestamp":"2026-06-01T12:00:03Z","level":"INFO","service":"service-b","client_id":"client-2","message":"OK","trace_id":"t3","status_code":200,"latency_ms":20}
